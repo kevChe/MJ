@@ -10,8 +10,6 @@ const TextBox = ({vertical, ac, keyboardType, value, setValue, password}) => {
             marginHorizontal: 40,
             marginTop: parseFloat(vertical),
             borderWidth: 1,
-            borderColor: '#AACCFF',
-            color: '#AACCFF',
             }}
             secureTextEntry={password}
             autoCapitalize={ac}
