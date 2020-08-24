@@ -2,7 +2,7 @@ import React, {useState, useEffect, useContext} from 'react'
 import {View, TouchableOpacity, FlatList, Text, StyleSheet} from 'react-native'
 import UserNames from '../context/UserNames'
 
-const RadioButton = ({list, position, action}) => {
+const RadioButton2 = ({list, position, action}) => {
 
     const [checked, setChecked] = useState(position)
     const [names, setNames] = useContext(UserNames)
@@ -19,7 +19,7 @@ const RadioButton = ({list, position, action}) => {
                 renderItem={({ item, index }) => {
                     return(
                         <TouchableOpacity style={styles.container} onPress={() => { setChecked(index) }}>
-                            <Text>{item}</Text>
+                            <Text>{names[item].value}</Text>
                             <View style={styles.radioButton}>
                             {(checked == index) ? <View style={styles.checkedButton} /> : <View/>}
                             </View>
@@ -56,4 +56,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default RadioButton;
+export default RadioButton2;

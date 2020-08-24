@@ -1,8 +1,10 @@
 import React, {useState, useContext} from 'react'
 import {View, Modal, Text, TouchableOpacity, StyleSheet} from 'react-native'
 import {Dropdown} from 'react-native-material-dropdown'
-import RadioButton from './../components/RadioButton'
+import RadioButton2 from './RadioButton2'
+import RadioButton from './RadioButton'
 import Fan from '../context/Fan'
+import PlayingContext from '../context/PlayingContext'
 
 const Calculation = ({visible, onPress, modalData, names, close }) => {
     const [predator, setPredator] = useState()
@@ -10,16 +12,17 @@ const Calculation = ({visible, onPress, modalData, names, close }) => {
     const [type, setType] = useState()
     const [fanArray, setFanArray] = useContext(Fan)
     const [fan, setFan] = useState()
+    const [playing, setPlaying] = useContext(PlayingContext)
 
 
     return(
         <Modal visible={visible} transparent={true} animationType={"fade"}>
             <View style={styles.container}> 
                 <TouchableOpacity style={{height: 10, width: 10, borderRadius: 10, borderWidth: 1, alignSelf: 'flex-end'}} onPress={() => close()}/>
-                <RadioButton list={names} position={modalData} action={(predator) => setPredator(predator)} />
+                <RadioButton2 list={playing} position={modalData} action={(predator) => setPredator(predator)} />
                 <RadioButton list={["食", "自摸", "包自摸"]} action={(type) => setType(type)} position={0} />
                 <Dropdown data={fanArray} onChangeText={(value) => setFan(value)}/>
-                {(type != "1") ? <RadioButton list={names} action={(prey) => setPrey(prey)} /> : <View/>}
+                {(type != "1") ? <RadioButton2 list={playing} action={(prey) => setPrey(prey)} /> : <View/>}
                 <TouchableOpacity onPress={() => {onPress(prey, predator, type, fan)}} style={styles.confirm}>
                     <Text style={styles.text}>Confirm</Text>
                 </TouchableOpacity>

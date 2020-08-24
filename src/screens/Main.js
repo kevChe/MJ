@@ -4,27 +4,29 @@ import UserContext from '../context/UserContext'
 import Fan from '../context/Fan'
 import Player from './../components/Player'
 import Calculation from './../components/Calculation'
+import PlayingContext from '../context/PlayingContext'
+import UserNames from '../context/UserNames'
 
 const Main = () => {
 
     const [userInfo, setUserInfo] = useContext(UserContext)
     const [modal, setModal] = useState(false);
     const [modalData, setModalData] = useState("");
-    const [names, setNames] = useState(["東", "南", "西", "北"])
-    const fanArray = [{value: 2}, {value: 4}, {value: 8}, {value: 16}, {value: 24}, {value: 32}, {value: 48}, {value: 64}, {value: 96}, {value: 128}]
-    const fanNameArray = [{value: "1番"}, {value: "2番"}, {value: "3番"}, {value: "4番"}, {value: "5番"}, {value: "6番"}, {value: "7番"}, {value: "8番"}, {value: "9番"}, {value: "10番"}]
-    const [fan, setFan] = useContext(Fan)
+    const [playing, setPlaying] = useContext(PlayingContext)
+    const [names, setNames] = useContext(UserNames)
 
-    const playerOnPress = (data) => {
+    const playerOnPress = (position) => {
         setModal(true);
-        setModalData(data)
+        setModalData(position)
     }
 
-
     const calculations = (prey, predator, type, fan) => {
+        prey = playing[prey]
+        predator = playing[predator]
+        console.log(prey, predator)
         let newScore = []
         if(type == 1){
-            for(let i = 0; i < 4; i ++){
+            for(let i = 0; i < names.legnth; i ++){
                 if(i == predator){
                     newScore[i] = parseInt(userInfo[userInfo.length - 1][i]) + parseInt(fan) * 1.5
                 }else [
@@ -35,7 +37,7 @@ const Main = () => {
             if(type == 2){
                 fan *= 1.5
             }
-            for(let i = 0; i < 4; i ++){
+            for(let i = 0; i < names.length; i ++){
                 if(i == predator){
                     newScore[i] = userInfo[userInfo.length - 1][i] + fan
                 }else if(i == prey){
@@ -46,6 +48,7 @@ const Main = () => {
             }
         }
         setUserInfo([...userInfo, newScore])
+        console.log(userInfo)
     }
 
     const modalConfirm = (prey, predator, type, fan) => {
@@ -57,14 +60,14 @@ const Main = () => {
     return(
         <View style={styles.container}>
             <View style={styles.row}>
-                <Player pos="0" onPress={(value)=>playerOnPress(value)} nameP={names[0]}/>
-                <Player pos="1" onPress={(value)=>playerOnPress(value)} nameP={names[1]}/>
+                <Player pos="0" onPress={(value)=>playerOnPress(value)} loc={0} setPlaying={(loc, player) => {setPlaying(loc, player)}}/>
+                <Player pos="1" onPress={(value)=>playerOnPress(value)} loc={1} setPlaying={(loc, player) => {setPlaying(loc, player)}}/>
             </View>
             <View style={styles.row}>
-                <Player pos="2" onPress={(value)=>playerOnPress(value)} nameP={names[2]}/>
-                <Player pos="3" onPress={(value)=>playerOnPress(value)} nameP={names[3]}/>
+                <Player pos="2" onPress={(value)=>playerOnPress(value)} loc={2} setPlaying={(loc, player) => {setPlaying(loc, player)}}/>
+                <Player pos="3" onPress={(value)=>playerOnPress(value)} loc={3} setPlaying={(loc, player) => {setPlaying(loc, player)}}/>
             </View>
-            <Calculation visible={modal} onPress={(prey, predator, type, fan)=>modalConfirm(prey, predator, type, fan)} modalData={modalData} names={names} fanArray={fanArray} close={()=>setModal(false)} fanNameArray={fanNameArray}/>
+            <Calculation visible={modal} onPress={(prey, predator, type, fan)=>modalConfirm(prey, predator, type, fan)} modalData={modalData} names={names} close={()=>setModal(false)}/>
         </View>
     )
 }

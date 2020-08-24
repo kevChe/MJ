@@ -2,16 +2,18 @@ import React, {useContext, useState} from 'react'
 import {View, Text, StyleSheet, TouchableOpacity, TextInput} from 'react-native'
 import UserContext from '../context/UserContext'
 import UserNames from '../context/UserNames'
+import PlayingContext from '../context/PlayingContext'
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { AntDesign } from '@expo/vector-icons'; 
 import FlipCard from 'react-native-flip-card'
 import {Dropdown} from 'react-native-material-dropdown'
 
-const Player = ({pos, onPress}) => {
-    const [position, setPosition] = useState(pos)
+const Player = ({pos, onPress, loc}) => {
     const [userInfo, setUserInfo] = useContext(UserContext)
     const [names, setNames] = useContext(UserNames)
+    const [playing, setPlaying] = useContext(PlayingContext)
     const [flip, setFlip] = useState(false)
+    const position = playing[pos]
 
     const setName = (value) => {
         let newArray = [...names]
@@ -20,13 +22,15 @@ const Player = ({pos, onPress}) => {
     }
 
     const changePlayer = (index) => {
-        setPosition(index)
+        let playingCopy = [...playing]
+        playingCopy[pos] = index
+        setPlaying(playingCopy)
     }
 
     return(
         <FlipCard flipHorizontal={true} flipVertical={false} flip={flip} clickable={false}>
 
-            <TouchableOpacity style={styles.Container} onPress={()=>onPress(position)}>
+            <TouchableOpacity style={styles.Container} onPress={()=>onPress(pos)}>
                 <TouchableOpacity style={{marginTop: 10, alignItems:'flex-end', marginRight: 10}} onPress={()=>setFlip(true)}>
                     <MaterialCommunityIcons name="settings" size={24} color="black" />
                 </TouchableOpacity>

@@ -8,7 +8,7 @@ const Sum = () => {
     const [userInfo, setUserInfo] = useContext(UserContext)
     const [names, setNames] = useContext(UserNames)
     const screenWidth = Math.round(Dimensions.get('window').width);
-    const userWidth = screenWidth / userInfo[0].length
+    const userWidth = screenWidth / userInfo[userInfo.length - 1].length
     
     return(
         <View>
